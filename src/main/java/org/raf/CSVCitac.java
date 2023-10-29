@@ -16,9 +16,9 @@ public class CSVCitac {
 
 
 
-    public static void main(String[] args) throws IOException {
+    public Raspored citaj(String filename) throws IOException {
         Raspored raspored = new Raspored(new Date());
-        String path = "D:\\Racunarski Fakultet Beograd\\Treca Godina\\5. Semestar\\Softverske komponente\\src\\main\\resources\\csv.csv";
+        String path = filename;
         String line = "";
         BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
 
@@ -31,14 +31,7 @@ public class CSVCitac {
             dodajUHashMapu(line,raspored);
         }
 
-        System.out.println("Sve ucionice!");
-        for (String s : raspored.getBozePomozi().get(2).keySet()) {
-            System.out.println("Ucionica : " + s);
-        }
-        System.out.println("Pojavljivanja ucionice raf 20 u rasporedu:");
-        for(Dogadjaj dogadjaj : raspored.getBozePomozi().get(2).get("Jovanovic Jelena")){
-            System.out.println(dogadjaj);
-        }
+        return raspored;
     }
 
 
@@ -49,7 +42,11 @@ public class CSVCitac {
         for(int i = 0; i < splits.length;i++){
             indexZaHashMapu = i/2;
             if(i % 2 == 1){
-                ubaciUListu(dogadjaj,raspored,indexZaHashMapu,splits[i]);
+                String s = splits[i];
+//                System.out.println(s);
+                s = s.replaceAll("\\p{Z}","");
+//                System.out.println(s);
+                ubaciUListu(dogadjaj,raspored,indexZaHashMapu,s);
             }
         }
     }
@@ -86,7 +83,9 @@ public class CSVCitac {
         String splits[] = line.split("\"");
         for(int i = 0; i < splits.length;i++){
             if(i % 2 == 1){
-                dogadjaj.getStavkeDogadjaja().add(splits[i]);
+                String s = splits[i];
+                s = s.replaceAll("\\p{Z}","");
+                dogadjaj.getStavkeDogadjaja().add(s);
             }
         }
 
