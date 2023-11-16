@@ -1,9 +1,11 @@
-package raf;
+package raf.paket;
 
 import com.google.common.io.Files;
 import model.Specifikacija;
 import model.boljeRijesenje.Dogadjaj;
+import model.boljeRijesenje.Manager;
 import model.boljeRijesenje.Raspored;
+import raf.StampacKonzola;
 import raf.csvimpl2.CSVCitac;
 import raf.csvimpl2.CSVPisac;
 import raf.jsonimpl2.JSONCitac;
@@ -12,11 +14,15 @@ import raf.jsonimpl2.JSONPIsac;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Implemetacija2 implements Specifikacija {
     private Raspored raspored;
+
+    static {
+        Manager.setSpecifikacija(new Implemetacija2());
+    }
+
 
     public Implemetacija2() {
     }
@@ -65,7 +71,7 @@ public class Implemetacija2 implements Specifikacija {
 
 
     @Override
-    public void ucitajRaspored(String s){
+    public Raspored ucitajRaspored(String s){
         String[] extensionCheck = s.split("\\.");
         if(Files.getFileExtension(s).equalsIgnoreCase("csv")){ // najjaca biblioteka bayo Guava firmetina
             CSVCitac csvCitac = new CSVCitac();
@@ -82,6 +88,7 @@ public class Implemetacija2 implements Specifikacija {
                 throw new RuntimeException(e);
             }
         }
+        return raspored;
     }
 //    public void nejmarUPetercu() {
 //        //ovo jednostavno mora na ovaj nacin, nema sanse da se koristi obrisiKolonu jer to pravi problem
